@@ -3,7 +3,9 @@ package com.example.gastodeviagem
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
+import java.lang.NumberFormatException
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,12 +25,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private fun calculate() {
 
         if (validationOK()) {
-            val distance = editDistance.text.toString().toFloat()
-            val price = editPrice.text.toString().toFloat()
-            val autonomy = editAutonomy.text.toString().toFloat()
+            try {
+                val distance = editDistance.text.toString().toFloat()
+                val price = editPrice.text.toString().toFloat()
+                val autonomy = editAutonomy.text.toString().toFloat()
 
-            val totalValue = (distance * price) / autonomy
-            tvToatalValue.text = "R$ ${"%.2f".format(totalValue)}"
+                val totalValue = (distance * price) / autonomy
+                tvToatalValue.text = "R$ ${"%.2f".format(totalValue)}"
+            } catch ( nfe : NumberFormatException){
+                Toast.makeText(applicationContext, getString(R.string.valor_valido), Toast.LENGTH_LONG).show()
+            }
+        } else {
+            Toast.makeText(applicationContext, getString(R.string.preencher_campos), Toast.LENGTH_LONG).show()
         }
     }
 
